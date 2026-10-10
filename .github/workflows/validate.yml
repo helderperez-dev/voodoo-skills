@@ -13,14 +13,14 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Checkout Framework source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: helderperez-dev/voodoo
           path: voodoo
       - name: Checkout Store source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: helderperez-dev/voodoo-store
           path: voodoo-store
