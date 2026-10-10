@@ -51,7 +51,7 @@ jobs:
           path: /tmp/voodoo-skills-sbom.json
       - name: Attest skills release evidence
         if: github.event_name == 'push'
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             /tmp/voodoo-skills-manifest.json
