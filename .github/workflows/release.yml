@@ -36,7 +36,7 @@ jobs:
             dist/voodoo-skills-manifest.json \
             dist/voodoo-skills-${GITHUB_REF_NAME}.zip
       - name: Attest exact release evidence
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             dist/voodoo-skills-*.zip
