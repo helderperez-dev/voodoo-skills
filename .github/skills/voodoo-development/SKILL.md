@@ -20,6 +20,9 @@ Use Voodoo as an integrated application runtime, not as a collection of unrelate
 9. `field()` expresses persistence metadata.
 10. `relation()` expresses relationships and lifecycle policy.
 11. Add infrastructure only when the application requires it.
+12. UI state is session-scoped by default; opt into application scope explicitly.
+13. WebSocket events and patches must be targeted to an authenticated UI session.
+14. Treat generated projects from `voodoo new` as the canonical scaffold; keep aliases thin.
 
 Before modeling data, read [model.md](references/model.md).
 Before choosing persistence/messaging, read [store.md](references/store.md).
@@ -63,3 +66,15 @@ Use the native primitive that matches the job:
 - CDC: committed change observation.
 
 Do not implement a native Store domain as an ad-hoc KV encoding.
+
+## UI and scaffold safety
+
+Use `state(..., scope="application")` only for intentionally shared data. Never
+put tenant, user, or browser-specific values in application-scoped state. Event
+bindings created during rendering belong to the current browser session and
+must not be reused across sessions.
+
+For new applications, use `voodoo new --no-install` and inspect the generated
+`app/` routes. The package-owned scaffold is the compatibility contract for the
+CLI and external template repository; avoid introducing a second inline
+template implementation.

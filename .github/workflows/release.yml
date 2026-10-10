@@ -1,0 +1,48 @@
+name: Release skills bundle
+
+on:
+  push:
+    tags:
+      - "skills-v*"
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate source and compatibility contracts
+        run: |
+          python scripts/validate.py
+          python scripts/check_skill_compatibility.py
+          python scripts/check_skill_examples.py
+          python scripts/install_smoke.py
+      - name: Build deterministic release evidence
+        run: |
+          mkdir -p dist
+          python scripts/release_manifest.py --output dist/voodoo-skills-manifest.json
+          python scripts/verify_release_manifest.py dist/voodoo-skills-manifest.json
+          python scripts/bundle_sbom.py --output dist/voodoo-skills-sbom.json
+          python scripts/package_bundle.py --output dist/voodoo-skills-${GITHUB_REF_NAME}.zip
+          python scripts/verify_bundle.py \
+            dist/voodoo-skills-manifest.json \
+            dist/voodoo-skills-${GITHUB_REF_NAME}.zip
+      - name: Attest exact release evidence
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/voodoo-skills-*.zip
+            dist/voodoo-skills-manifest.json
+            dist/voodoo-skills-sbom.json
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --target "$GITHUB_SHA" --generate-notes

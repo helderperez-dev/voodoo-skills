@@ -42,6 +42,15 @@ For development of Voodoo Store:
 - Python API design
 - Store packaging and releases
 
+### Focused production skills
+
+- `voodoo-production-deployment` — secure configuration, health/readiness,
+  provenance, and rollback evidence.
+- `voodoo-component-authoring` — semantic, accessible, token-based UI work.
+- `voodoo-migration-3x` — evidence-driven legacy-to-3.x migration.
+- `voodoo-store-backup-recovery` — backup, restore, compaction, quota, and
+  disaster-recovery operations.
+
 ## Use today with VS Code / GitHub Copilot
 
 Clone the repository:
@@ -58,6 +67,15 @@ macOS / Linux:
 ```bash
 bash scripts/install.sh copilot
 ```
+
+Preview an installation without changing the destination:
+
+```bash
+bash scripts/install.sh --dry-run project ~/code/voodoo
+```
+
+Normal installations stage existing skills and automatically restore them if
+copying a later skill fails.
 
 This installs into:
 

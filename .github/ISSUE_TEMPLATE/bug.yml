@@ -1,0 +1,17 @@
+name: Skills issue
+description: Report incorrect or unsafe distributed guidance.
+title: "bug(skills): "
+labels: [bug, skills]
+body:
+  - type: input
+    id: skill
+    attributes:
+      label: Skill and revision
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+    validations:
+      required: true
